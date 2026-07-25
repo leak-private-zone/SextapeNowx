@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>SextapeNow</title>
+  <style>
+    :root {
+      --black: #080808;
+      --panel: #111;
+      --line: #292929;
+      --white: #f2f2f2;
+      --muted: #888;
+      --red: #e31e2b;
+      --red-dark: #be1722;
+      --sans: Arial, Helvetica, sans-serif;
+      --mono: "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--black); scroll-behavior: smooth; }
+    body {
+      min-width: 320px;
+      margin: 0;
+      color: var(--white);
+      background: var(--black);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, a { font: inherit; -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, a:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
+    .hidden { display: none !important; }
+
+    .age-gate {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 32px 20px;
+      background: radial-gradient(circle at 72% 34%, rgba(227, 30, 43, .2), transparent 30rem), var(--black);
+    }
+
+    .age-gate::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 9%;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(transparent, rgba(227, 30, 43, .55), transparent);
+      transform: rotate(23deg) scaleY(1.4);
+    }
+
+    .age-panel {
+      width: min(100%, 520px);
+      position: relative;
+      z-index: 1;
+      padding: clamp(32px, 7vw, 68px);
+      border: 1px solid var(--line);
+      background: rgba(16, 16, 16, .94);
+      box-shadow: 15px 15px 0 rgba(227, 30, 43, .82);
+      animation: rise .5s cubic-bezier(.22, 1, .36, 1) both;
+    }
+
+    .age-logo {
+      margin: 0 0 54px;
+      color: var(--red);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -.06em;
+    }
+
+    .kicker, .eyebrow, .count, .footer, .age-note, .video-code {
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+
+    .kicker { margin: 0 0 14px; color: var(--red); font-size: 10px; }
+    .age-title {
+      max-width: 390px;
+      margin: 0;
+      font-size: clamp(38px, 7vw, 70px);
+      line-height: .9;
+      letter-spacing: -.085em;
+    }
+
+    .age-copy { margin: 24px 0 32px; color: var(--muted); font-size: 13px; line-height: 1.65; }
+    .age-actions { display: grid; gap: 10px; }
+
+    .age-enter, .age-leave, .close {
+      min-height: 50px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      transition: background .2s, color .2s, border-color .2s, transform .2s;
+    }
+
+    .age-enter { border-color: var(--red); color: #fff; background: var(--red); }
+    .age-enter:hover, .close:hover { background: var(--red-dark); transform: translateY(-2px); }
+    .age-leave { border-color: #303030; color: #8d8d8d; background: transparent; }
+    .age-leave:hover { border-color: #777; color: #eee; }
+    .age-note { margin: 32px 0 0; color: #5f5f5f; font-size: 9px; line-height: 1.6; }
+
+    .site {
+      min-height: 100vh;
+      background: radial-gradient(circle at 79% 2%, rgba(227, 30, 43, .11), transparent 27rem), var(--black);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(255, 255, 255, .1);
+      background: rgba(8, 8, 8, .9);
+      backdrop-filter: blur(18px);
+    }
+
+    .header-inner, .hero, .catalog-head, .grid, .footer {
+      width: min(100% - 40px, 1180px);
+      margin: auto;
+    }
+
+    .header-inner {
+      min-height: 74px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      color: var(--red);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -.06em;
+      text-decoration: none;
+    }
+
+    .brand::before {
+      content: "";
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      margin-right: 11px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 0 5px rgba(227, 30, 43, .13);
+    }
+
+    .header-meta { color: #777; font-family: var(--mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+    .hero { padding: clamp(75px, 10vw, 128px) 0 clamp(48px, 7vw, 90px); }
+    .eyebrow { margin: 0 0 24px; color: var(--red); font-size: 10px; }
+    .eyebrow::before { content: ""; display: inline-block; width: 28px; height: 1px; margin-right: 12px; vertical-align: middle; background: var(--red); }
+    .hero-title { max-width: 760px; margin: 0; font-size: clamp(48px, 10vw, 122px); font-weight: 600; letter-spacing: -.09em; line-height: .88; }
+    .hero-title em { color: var(--red); font-style: normal; }
+    .intro { max-width: 410px; margin: 32px 0 0; color: #8e8e8e; font-size: 14px; line-height: 1.7; }
+
+    .catalog-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+      padding-bottom: 16px;
+    }
+
+    .catalog-head h2 { margin: 0; font-size: 18px; font-weight: 500; letter-spacing: -.03em; }
+    .count { color: #777; font-size: 10px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+
+    .card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid #242424;
+      color: inherit;
+      background: #111;
+      cursor: pointer;
+      text-align: left;
+      transition: border-color .25s, transform .25s;
+    }
+
+    .card:hover { border-color: rgba(227, 30, 43, .7); transform: translateY(-4px); }
+    .thumb { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #151515; }
+
+    .thumb iframe {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      pointer-events: none;
+      background: #151515;
+    }
+
+    .wash {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        linear-gradient(135deg, transparent 0 40%, rgba(227, 30, 43, .52) 40% 42%, transparent 42% 100%),
+        linear-gradient(35deg, rgba(10, 10, 10, .42) 0 47%, rgba(36, 36, 36, .25) 47% 49%, rgba(0, 0, 0, .44) 49% 100%);
+    }
+
+    .number { position: absolute; top: 11px; left: 12px; z-index: 2; color: rgba(255, 255, 255, .7); font-family: var(--mono); font-size: 10px; }
+    .play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 2;
+      display: grid;
+      width: 44px;
+      height: 44px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, .55);
+      border-radius: 50%;
+      background: rgba(8, 8, 8, .5);
+      transform: translate(-50%, -50%);
+      transition: background .2s, border-color .2s, transform .2s;
+    }
+
+    .card:hover .play { border-color: var(--red); background: var(--red); transform: translate(-50%, -50%) scale(1.08); }
+    .play::after { content: ""; margin-left: 3px; border-top: 7px solid transparent; border-bottom: 7px solid transparent; border-left: 9px solid currentColor; }
+    .info { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 13px 14px; }
+    .title { margin: 0; color: #e8e8e8; font-size: 13px; font-weight: 500; }
+    .video-code { overflow: hidden; margin: 5px 0 0; color: #707070; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+    .arrow { color: var(--red); font-size: 18px; }
+    .footer { display: flex; justify-content: space-between; gap: 16px; margin-top: clamp(80px, 12vw, 160px); border-top: 1px solid rgba(255, 255, 255, .1); padding: 22px 0 36px; color: #6d6d6d; font-size: 9px; }
+    .quit { border: 0; color: #909090; background: transparent; cursor: pointer; font-family: inherit; font-size: inherit; letter-spacing: inherit; text-transform: inherit; }
+    .quit:hover { color: var(--red); }
+
+    .reader {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 72px 16px 16px;
+      background: rgba(0, 0, 0, .96);
+    }
+
+    .close { position: absolute; top: 16px; right: 16px; min-width: 96px; min-height: 40px; border-color: var(--red); color: #fff; background: var(--red); }
+    .reader-frame { width: min(100%, 1100px); aspect-ratio: 16 / 9; border: 1px solid #333; background: #101010; }
+    .reader-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (min-width: 700px) { .grid { gap: 16px; } }
+    @media (min-width: 900px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (min-width: 1200px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; } }
+    @media (max-width: 540px) {
+      .header-inner, .hero, .catalog-head, .grid, .footer { width: calc(100% - 24px); }
+      .header-inner { min-height: 65px; }
+      .header-meta { font-size: 8px; }
+      .footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main id="ageGate" class="age-gate">
+    <section class="age-panel" aria-labelledby="ageTitle">
+      <p class="age-logo">SextapeNow</p>
+      <p class="kicker">Contrôle d'accès</p>
+      <h1 id="ageTitle" class="age-title">Réservé aux adultes.</h1>
+      <p class="age-copy">Ce site contient du contenu réservé aux personnes majeures. Confirmez votre âge pour continuer.</p>
+      <div class="age-actions">
+        <button id="enterButton" class="age-enter" type="button">J'ai 18 ans ou plus</button>
+        <button id="minorButton" class="age-leave" type="button">Je suis mineur</button>
+      </div>
+      <p class="age-note">En entrant, vous certifiez être majeur dans votre pays de résidence.</p>
+    </section>
+  </main>
+
+  <div id="site" class="site hidden">
+    <header>
+      <div class="header-inner">
+        <a class="brand" href="#top">SextapeNow</a>
+        <span class="header-meta">18+ / accès privé</span>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <p class="eyebrow">Collection privée / 2026</p>
+        <h1 class="hero-title">Regardez<br><em>sans détour.</em></h1>
+        <p class="intro">Une sélection de vidéos hébergées sur Eporner, accessible depuis un espace simple, discret et réservé aux adultes.</p>
+      </section>
+
+      <section aria-labelledby="selectionTitle">
+        <div class="catalog-head">
+          <h2 id="selectionTitle">La sélection</h2>
+          <span id="count" class="count"></span>
+        </div>
+        <div id="grid" class="grid"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>SextapeNow © 2026</span>
+      <button id="quitButton" class="quit" type="button">Quitter la session</button>
+    </footer>
+  </div>
+
+  <div id="reader" class="reader hidden" role="dialog" aria-modal="true" aria-label="Lecteur vidéo">
+    <button id="closeButton" class="close" type="button">Fermer</button>
+    <div class="reader-frame">
+      <iframe id="readerIframe" title="Lecteur SextapeNow" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <script>
+    /*
+      Pour ajouter une vidéo plus tard, ajoute une nouvelle URL dans ce tableau.
+      Tu n'as besoin de modifier aucune autre partie du fichier.
+    */
+    var videos = [
+      "https://www.eporner.com/embed/Sr3sCrAVNoO/",
+      "https://www.eporner.com/embed/NPI3OAIuMvz/","https://www.eporner.com/embed/OSbwnTIEK1H/","https://www.eporner.com/embed/DMIgDyQwPP4/"
+    ];
+
+    (function () {
+      var ageKey = "sextapenow-age-confirmed";
+      var ageGate = document.getElementById("ageGate");
+      var site = document.getElementById("site");
+      var reader = document.getElementById("reader");
+      var readerIframe = document.getElementById("readerIframe");
+      var grid = document.getElementById("grid");
+      var count = document.getElementById("count");
+      var names = ["Private take", "After hours", "Night shift", "Uncut session", "Late signal", "Off record"];
+
+      function showSite() {
+        ageGate.classList.add("hidden");
+        site.classList.remove("hidden");
+        renderVideos();
+      }
+
+      function showAgeGate() {
+        site.classList.add("hidden");
+        closeVideo();
+        ageGate.classList.remove("hidden");
+        try { sessionStorage.removeItem(ageKey); } catch (error) {}
+        window.scrollTo(0, 0);
+      }
+
+      function openVideo(url) {
+        readerIframe.src = url;
+        reader.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeVideo() {
+        reader.classList.add("hidden");
+        readerIframe.src = "";
+        document.body.style.overflow = "";
+      }
+
+      function codeFromUrl(url) {
+        var pieces = url.split("/").filter(Boolean);
+        return pieces[pieces.length - 1] || "EPORNER";
+      }
+
+      function renderVideos() {
+        var list = [];
+        var seen = {};
+        if (Array.isArray(videos)) {
+          videos.forEach(function (url) {
+            if (
+              typeof url === "string" &&
+              url.indexOf("https://www.eporner.com/embed/") === 0 &&
+              !seen[url]
+            ) {
+              seen[url] = true;
+              list.push(url);
+            }
+          });
+        }
+
+        count.textContent = list.length + (list.length === 1 ? " vidéo" : " vidéos");
+        grid.innerHTML = "";
+
+        list.forEach(function (url, index) {
+          var button = document.createElement("button");
+          button.className = "card";
+          button.type = "button";
+          button.setAttribute("aria-label", "Ouvrir la vidéo " + (index + 1));
+          button.innerHTML =
+            '<div class="thumb">' +
+              '<iframe src="' + url.replace(/"/g, "&quot;") + '" title="Aperçu vidéo ' + (index + 1) + '" tabindex="-1" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>' +
+              '<span class="wash"></span>' +
+              '<span class="number">/ ' + String(index + 1).padStart(2, "0") + '</span>' +
+              '<span class="play"></span>' +
+            '</div>' +
+            '<div class="info"><div><p class="title">' + (names[index] || "Archive " + String(index + 1).padStart(2, "0")) + '</p><p class="video-code">' + codeFromUrl(url) + '</p></div><span class="arrow">↗</span></div>';
+          button.addEventListener("click", function () { openVideo(url); });
+          grid.appendChild(button);
+        });
+      }
+
+      document.getElementById("enterButton").addEventListener("click", function () {
+        try { sessionStorage.setItem(ageKey, "true"); } catch (error) {}
+        showSite();
+      });
+
+      document.getElementById("minorButton").addEventListener("click", function () {
+        window.location.href = "https://www.google.com/";
+      });
+
+      document.getElementById("quitButton").addEventListener("click", showAgeGate);
+      document.getElementById("closeButton").addEventListener("click", closeVideo);
+      reader.addEventListener("click", function (event) {
+        if (event.target === reader) closeVideo();
+      });
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") closeVideo();
+      });
+
+      var verified = false;
+      try { verified = sessionStorage.getItem(ageKey) === "true"; } catch (error) {}
+      if (verified) showSite();
+    }());
+  </script>
+</body>
+</html>
+
