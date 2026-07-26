@@ -28,6 +28,7 @@
       font-family: var(--sans);
       -webkit-font-smoothing: antialiased;
     }
+    
 
     button, a, input { font: inherit; -webkit-tap-highlight-color: transparent; }
     button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -73,6 +74,7 @@
     .age-leave { border-color: #3d3d3d; color: var(--muted); background: transparent; }
     .age-leave:hover { border-color: #666; color: var(--white); }
     .age-note { margin: 26px 0 0; color: var(--dim); font-size: 9px; line-height: 1.6; }
+    
 
     /* ---------- Site ---------- */
     header {
@@ -331,7 +333,73 @@
     }
   </style>
 </head>
-<body>
+<body> 
+<style>
+  .led-banner {
+    width: 100%;
+    max-width: 900px;
+    height: 70px;
+    background: #000;
+    border: 6px solid #222;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.6);
+    margin: 20px auto;
+  }
+
+  .led-banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.25) 0px,
+      rgba(0,0,0,0.25) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .led-text {
+    position: absolute;
+    white-space: nowrap;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 42px;
+    letter-spacing: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 100%;
+
+    background: linear-gradient(90deg,
+      #ff0040, #ff9900, #ffee00, #33ff33, #00ccff, #cc33ff, #ff0040
+    );
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: scroll-rtl 8s linear infinite, hue-shift 4s linear infinite;
+
+    text-shadow: 0 0 8px rgba(255,255,255,0.3);
+  }
+
+  @keyframes scroll-rtl {
+    from { left: 100%; }
+    to { left: -100%; }
+  }
+
+  @keyframes hue-shift {
+    from { background-position: 0% 50%; }
+    to { background-position: 300% 50%; }
+  }
+</style>
+
+<div class="led-banner">
+  <div class="led-text">SextapeNow</div>
+</div>
   <main id="ageGate" class="age-gate">
     <section class="age-panel" aria-labelledby="ageTitle">
       <p class="age-logo">SextapeNow</p>
