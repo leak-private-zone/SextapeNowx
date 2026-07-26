@@ -7,236 +7,263 @@
   <title>SextapeNow</title>
   <style>
     :root {
-      --black: #080808;
-      --panel: #111;
-      --line: #292929;
-      --white: #f2f2f2;
-      --muted: #888;
-      --red: #e31e2b;
-      --red-dark: #be1722;
+      --bg: #0f0f0f;
+      --panel: #181818;
+      --line: #2a2a2a;
+      --white: #f1f1f1;
+      --muted: #aaa;
+      --dim: #717171;
+      --accent: #3ea6ff;
       --sans: Arial, Helvetica, sans-serif;
       --mono: "Courier New", monospace;
     }
 
     * { box-sizing: border-box; }
-    html { background: var(--black); scroll-behavior: smooth; }
+    html { background: var(--bg); scroll-behavior: smooth; }
     body {
       min-width: 320px;
       margin: 0;
       color: var(--white);
-      background: var(--black);
+      background: var(--bg);
       font-family: var(--sans);
       -webkit-font-smoothing: antialiased;
     }
 
-    button, a { font: inherit; -webkit-tap-highlight-color: transparent; }
-    button:focus-visible, a:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
+    button, a, input { font: inherit; -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .hidden { display: none !important; }
 
+    /* ---------- Écran d'âge ---------- */
     .age-gate {
       min-height: 100vh;
       min-height: 100dvh;
       display: grid;
       place-items: center;
-      position: relative;
-      overflow: hidden;
       padding: 32px 20px;
-      background: radial-gradient(circle at 72% 34%, rgba(227, 30, 43, .2), transparent 30rem), var(--black);
-    }
-
-    .age-gate::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 9%;
-      width: 1px;
-      height: 100%;
-      background: linear-gradient(transparent, rgba(227, 30, 43, .55), transparent);
-      transform: rotate(23deg) scaleY(1.4);
+      background: var(--bg);
     }
 
     .age-panel {
-      width: min(100%, 520px);
-      position: relative;
-      z-index: 1;
-      padding: clamp(32px, 7vw, 68px);
+      width: min(100%, 460px);
+      padding: clamp(28px, 6vw, 48px);
       border: 1px solid var(--line);
-      background: rgba(16, 16, 16, .94);
-      box-shadow: 15px 15px 0 rgba(227, 30, 43, .82);
+      border-radius: 12px;
+      background: var(--panel);
       animation: rise .5s cubic-bezier(.22, 1, .36, 1) both;
     }
 
-    .age-logo {
-      margin: 0 0 54px;
-      color: var(--red);
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -.06em;
-    }
-
-    .kicker, .eyebrow, .count, .footer, .age-note, .video-code {
-      font-family: var(--mono);
-      text-transform: uppercase;
-      letter-spacing: .12em;
-    }
-
-    .kicker { margin: 0 0 14px; color: var(--red); font-size: 10px; }
-    .age-title {
-      max-width: 390px;
-      margin: 0;
-      font-size: clamp(38px, 7vw, 70px);
-      line-height: .9;
-      letter-spacing: -.085em;
-    }
-
-    .age-copy { margin: 24px 0 32px; color: var(--muted); font-size: 13px; line-height: 1.65; }
+    .age-logo { margin: 0 0 36px; color: var(--white); font-size: 18px; font-weight: 700; }
+    .kicker { margin: 0 0 12px; color: var(--accent); font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+    .age-title { max-width: 360px; margin: 0; font-size: clamp(26px, 5vw, 36px); line-height: 1.2; font-weight: 700; }
+    .age-copy { margin: 20px 0 28px; color: var(--muted); font-size: 13px; line-height: 1.65; }
     .age-actions { display: grid; gap: 10px; }
 
     .age-enter, .age-leave, .close {
-      min-height: 50px;
+      min-height: 46px;
       border: 1px solid transparent;
+      border-radius: 22px;
       cursor: pointer;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      transition: background .2s, color .2s, border-color .2s, transform .2s;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background .2s, color .2s, border-color .2s;
     }
 
-    .age-enter { border-color: var(--red); color: #fff; background: var(--red); }
-    .age-enter:hover, .close:hover { background: var(--red-dark); transform: translateY(-2px); }
-    .age-leave { border-color: #303030; color: #8d8d8d; background: transparent; }
-    .age-leave:hover { border-color: #777; color: #eee; }
-    .age-note { margin: 32px 0 0; color: #5f5f5f; font-size: 9px; line-height: 1.6; }
+    .age-enter { color: #0f0f0f; background: var(--white); }
+    .age-enter:hover { background: #d4d4d4; }
+    .age-leave { border-color: #3d3d3d; color: var(--muted); background: transparent; }
+    .age-leave:hover { border-color: #666; color: var(--white); }
+    .age-note { margin: 26px 0 0; color: var(--dim); font-size: 9px; line-height: 1.6; }
 
-    .site {
-      min-height: 100vh;
-      background: radial-gradient(circle at 79% 2%, rgba(227, 30, 43, .11), transparent 27rem), var(--black);
-    }
-
+    /* ---------- Site ---------- */
     header {
       position: sticky;
       top: 0;
       z-index: 10;
-      border-bottom: 1px solid rgba(255, 255, 255, .1);
-      background: rgba(8, 8, 8, .9);
-      backdrop-filter: blur(18px);
-    }
-
-    .header-inner, .hero, .catalog-head, .grid, .footer {
-      width: min(100% - 40px, 1180px);
-      margin: auto;
-    }
-
-    .header-inner {
-      min-height: 74px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-    }
-
-    .brand {
-      color: var(--red);
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -.06em;
-      text-decoration: none;
-    }
-
-    .brand::before {
-      content: "";
-      display: inline-block;
-      width: 9px;
-      height: 9px;
-      margin-right: 11px;
-      border-radius: 50%;
-      background: var(--red);
-      box-shadow: 0 0 0 5px rgba(227, 30, 43, .13);
-    }
-
-    .header-meta { color: #777; font-family: var(--mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
-    .hero { padding: clamp(75px, 10vw, 128px) 0 clamp(48px, 7vw, 90px); }
-    .eyebrow { margin: 0 0 24px; color: var(--red); font-size: 10px; }
-    .eyebrow::before { content: ""; display: inline-block; width: 28px; height: 1px; margin-right: 12px; vertical-align: middle; background: var(--red); }
-    .hero-title { max-width: 760px; margin: 0; font-size: clamp(48px, 10vw, 122px); font-weight: 600; letter-spacing: -.09em; line-height: .88; }
-    .hero-title em { color: var(--red); font-style: normal; }
-    .intro { max-width: 410px; margin: 32px 0 0; color: #8e8e8e; font-size: 14px; line-height: 1.7; }
-
-    .catalog-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
       gap: 16px;
-      margin-bottom: 24px;
-      border-bottom: 1px solid rgba(255, 255, 255, .12);
-      padding-bottom: 16px;
+      min-height: 58px;
+      padding: 0 clamp(14px, 3vw, 28px);
+      border-bottom: 1px solid var(--line);
+      background: var(--bg);
     }
 
-    .catalog-head h2 { margin: 0; font-size: 18px; font-weight: 500; letter-spacing: -.03em; }
-    .count { color: #777; font-size: 10px; }
-    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .brand { flex: 0 0 auto; color: var(--white); font-size: 18px; font-weight: 700; text-decoration: none; white-space: nowrap; }
 
-    .card {
-      min-width: 0;
-      overflow: hidden;
-      border: 1px solid #242424;
-      color: inherit;
-      background: #111;
+    .search-wrap { flex: 1 1 auto; display: flex; max-width: 640px; margin: 0 auto; }
+    .search-wrap input {
+      flex: 1;
+      min-height: 38px;
+      padding: 0 16px;
+      border: 1px solid #303030;
+      border-right: 0;
+      border-radius: 20px 0 0 20px;
+      background: #121212;
+      color: var(--white);
+      font-size: 14px;
+    }
+    .search-wrap input::placeholder { color: #777; }
+    .search-wrap input:focus { border-color: #565656; }
+    .search-btn {
+      min-width: 56px;
+      border: 1px solid #303030;
+      border-radius: 0 20px 20px 0;
+      background: #222;
+      color: var(--muted);
       cursor: pointer;
-      text-align: left;
-      transition: border-color .25s, transform .25s;
+      font-size: 15px;
+    }
+    .search-btn:hover { background: #2c2c2c; }
+
+    .header-meta { flex: 0 0 auto; color: var(--dim); font-family: var(--mono); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+
+    .page { width: min(100% - 32px, 1400px); margin: 0 auto; padding: 20px 0 60px; }
+
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .chip {
+      min-height: 32px;
+      padding: 0 14px;
+      border: 1px solid #303030;
+      border-radius: 8px;
+      color: var(--muted);
+      background: #181818;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background .2s, color .2s;
+    }
+    .chip:hover { background: #272727; color: var(--white); }
+    .chip.active { color: #0f0f0f; background: var(--white); border-color: var(--white); }
+
+    .count { margin: 0 0 16px; color: var(--dim); font-size: 12px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 22px 14px;
     }
 
-    .card:hover { border-color: rgba(227, 30, 43, .7); transform: translateY(-4px); }
-    .thumb { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #151515; }
+    .empty { grid-column: 1/-1; padding: 60px 20px; color: var(--dim); text-align: center; font-size: 13px; }
+
+    .card { min-width: 0; color: inherit; background: transparent; border: 0; cursor: pointer; text-align: left; }
+    .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+    .history { margin-top: 6px; }
+    .history summary {
+      cursor: pointer;
+      color: var(--accent);
+      font-size: 11px;
+      list-style: none;
+    }
+    .history summary::-webkit-details-marker { display: none; }
+    .history summary::before { content: "▸ "; }
+    .history[open] summary::before { content: "▾ "; }
+    .history ul {
+      max-height: 140px;
+      margin: 6px 0 0;
+      padding: 8px 10px;
+      overflow-y: auto;
+      border-radius: 8px;
+      background: #101010;
+      list-style: none;
+    }
+    .history li { padding: 2px 0; color: var(--muted); font-size: 11px; font-family: var(--mono); }
+
+    .thumb {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 10px;
+      background: #202020;
+    }
 
     .thumb iframe {
       position: absolute;
       inset: 0;
-      z-index: 0;
       width: 100%;
       height: 100%;
       border: 0;
       pointer-events: none;
-      background: #151515;
+      background: #202020;
     }
 
-    .wash {
+    .thumb::after {
+      content: "";
       position: absolute;
       inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background:
-        linear-gradient(135deg, transparent 0 40%, rgba(227, 30, 43, .52) 40% 42%, transparent 42% 100%),
-        linear-gradient(35deg, rgba(10, 10, 10, .42) 0 47%, rgba(36, 36, 36, .25) 47% 49%, rgba(0, 0, 0, .44) 49% 100%);
+      background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.55) 100%);
     }
 
-    .number { position: absolute; top: 11px; left: 12px; z-index: 2; color: rgba(255, 255, 255, .7); font-family: var(--mono); font-size: 10px; }
     .play {
       position: absolute;
       top: 50%;
       left: 50%;
       z-index: 2;
       display: grid;
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       place-items: center;
-      border: 1px solid rgba(255, 255, 255, .55);
       border-radius: 50%;
-      background: rgba(8, 8, 8, .5);
-      transform: translate(-50%, -50%);
-      transition: background .2s, border-color .2s, transform .2s;
+      background: rgba(255, 255, 255, .92);
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.85);
+      transition: opacity .18s, transform .18s;
+    }
+    .card:hover .play { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    .play::after { content: ""; margin-left: 3px; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 11px solid #0f0f0f; }
+
+    .video-index {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      z-index: 2;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(0,0,0,.75);
+      color: #eee;
+      font-family: var(--mono);
+      font-size: 10px;
     }
 
-    .card:hover .play { border-color: var(--red); background: var(--red); transform: translate(-50%, -50%) scale(1.08); }
-    .play::after { content: ""; margin-left: 3px; border-top: 7px solid transparent; border-bottom: 7px solid transparent; border-left: 9px solid currentColor; }
-    .info { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 13px 14px; }
-    .title { margin: 0; color: #e8e8e8; font-size: 13px; font-weight: 500; }
-    .video-code { overflow: hidden; margin: 5px 0 0; color: #707070; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
-    .arrow { color: var(--red); font-size: 18px; }
-    .footer { display: flex; justify-content: space-between; gap: 16px; margin-top: clamp(80px, 12vw, 160px); border-top: 1px solid rgba(255, 255, 255, .1); padding: 22px 0 36px; color: #6d6d6d; font-size: 9px; }
-    .quit { border: 0; color: #909090; background: transparent; cursor: pointer; font-family: inherit; font-size: inherit; letter-spacing: inherit; text-transform: inherit; }
-    .quit:hover { color: var(--red); }
+    .meta { display: flex; gap: 10px; margin-top: 10px; }
+    .avatar {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #2f2f2f;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .meta-text { min-width: 0; }
+    .title {
+      margin: 0;
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .subline { margin: 5px 0 0; color: var(--dim); font-size: 12px; line-height: 1.5; }
+    .views { color: var(--dim); }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 60px;
+      padding: 20px 0 30px;
+      border-top: 1px solid var(--line);
+      color: var(--dim);
+      font-size: 11px;
+    }
+    .quit { border: 0; color: var(--muted); background: transparent; cursor: pointer; font: inherit; }
+    .quit:hover { color: var(--white); }
 
     .reader {
       position: fixed;
@@ -245,26 +272,61 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 72px 16px 16px;
+      padding: 48px 12px 12px;
       background: rgba(0, 0, 0, .96);
     }
 
-    .close { position: absolute; top: 16px; right: 16px; min-width: 96px; min-height: 40px; border-color: var(--red); color: #fff; background: var(--red); }
-    .reader-frame { width: min(100%, 1100px); aspect-ratio: 16 / 9; border: 1px solid #333; background: #101010; }
-    .reader-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+    .close { position: absolute; top: 16px; right: 16px; min-width: 88px; min-height: 38px; border-radius: 20px; color: #0f0f0f; font-weight: 700; background: var(--white); }
+    .close:hover { background: #d4d4d4; }
+    .reader-frame { 
+  width: 96vw; 
+  max-width: 1500px; 
+  height: 80vh; 
+  max-height: 80vh; 
+  border-radius: 10px; 
+  overflow: hidden; 
+  background: #101010; 
+  position: relative; 
+}
+    .reader-frame iframe { display: block; width: 100%; height: 100%; border: 0; position: relative; z-index: 1; }
+    .reader-loading {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--dim);
+      font-size: 13px;
+      letter-spacing: .04em;
+    }
+    .reader-info { width: min(100%, 1100px); margin-top: 12px; color: var(--muted); font-size: 13px; }
+    .reader-info strong { color: var(--white); }
+
+    .ad-slot {
+      grid-column: 1/-1;
+      padding: 12px 16px;
+      border: 1px dashed #333;
+      border-radius: 8px;
+      background: #141414;
+      color: #5a5a5a;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      text-align: center;
+    }
 
     @keyframes rise {
-      from { opacity: 0; transform: translateY(18px); }
+      from { opacity: 0; transform: translateY(14px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @media (min-width: 700px) { .grid { gap: 16px; } }
-    @media (min-width: 900px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-    @media (min-width: 1200px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; } }
-    @media (max-width: 540px) {
-      .header-inner, .hero, .catalog-head, .grid, .footer { width: calc(100% - 24px); }
-      .header-inner { min-height: 65px; }
-      .header-meta { font-size: 8px; }
+    @media (max-width: 560px) {
+      .brand { font-size: 15px; }
+      .header-meta { display: none; }
+      .page { padding-top: 14px; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 18px 10px; }
       .footer { flex-direction: column; }
     }
   </style>
@@ -275,41 +337,40 @@
       <p class="age-logo">SextapeNow</p>
       <p class="kicker">Contrôle d'accès</p>
       <h1 id="ageTitle" class="age-title">Réservé aux adultes.</h1>
-      <p class="age-copy">Ce site contient du contenu réservé aux personnes majeures. Confirmez votre âge pour continuer.</p>
+      <p class="age-copy">Ce site contient du contenu réservé aux personnes majeures. Confirme ton âge pour continuer.</p>
       <div class="age-actions">
         <button id="enterButton" class="age-enter" type="button">J'ai 18 ans ou plus</button>
         <button id="minorButton" class="age-leave" type="button">Je suis mineur</button>
       </div>
-      <p class="age-note">En entrant, vous certifiez être majeur dans votre pays de résidence.</p>
+      <p class="age-note">En entrant, tu certifies être majeur dans ton pays de résidence.</p>
     </section>
   </main>
 
-  <div id="site" class="site hidden">
+  <div id="site" class="hidden">
     <header>
-      <div class="header-inner">
-        <a class="brand" href="#top">SextapeNow</a>
-        <span class="header-meta">18+ / accès privé</span>
-      </div>
+      <a class="brand" href="#top">SextapeNow</a>
+      <form class="search-wrap" id="searchForm">
+        <input id="searchInput" type="search" placeholder="Rechercher une vidéo" aria-label="Rechercher une vidéo">
+        <button class="search-btn" type="submit" aria-label="Rechercher">🔍</button>
+      </form>
+      <span class="header-meta">18+ / accès privé</span>
     </header>
 
-    <main id="top">
-      <section class="hero">
-        <p class="eyebrow">Collection privée / 2026</p>
-        <h1 class="hero-title">Regardez<br><em>sans détour.</em></h1>
-        <p class="intro">Une sélection de vidéos hébergées sur Eporner, accessible depuis un espace simple, discret et réservé aux adultes.</p>
-      </section>
+    <main id="top" class="page">
+      <div class="toolbar" id="toolbar" role="tablist" aria-label="Trier les vidéos">
+        <button class="chip active" data-sort="default" type="button">Par défaut</button>
+        <button class="chip" data-sort="popular" type="button">Les plus vues</button>
+        <button class="chip" data-sort="az" type="button">A → Z</button>
+      </div>
 
-      <section aria-labelledby="selectionTitle">
-        <div class="catalog-head">
-          <h2 id="selectionTitle">La sélection</h2>
-          <span id="count" class="count"></span>
-        </div>
-        <div id="grid" class="grid"></div>
-      </section>
+      <p id="count" class="count"></p>
+
+      <div id="grid" class="grid"></div>
     </main>
 
     <footer class="footer">
       <span>SextapeNow © 2026</span>
+      <a class="quit" id="reportLink" href="mailto:contact@example.com?subject=Signalement" style="text-decoration:none;">Contact / Signaler un contenu</a>
       <button id="quitButton" class="quit" type="button">Quitter la session</button>
     </footer>
   </div>
@@ -317,29 +378,72 @@
   <div id="reader" class="reader hidden" role="dialog" aria-modal="true" aria-label="Lecteur vidéo">
     <button id="closeButton" class="close" type="button">Fermer</button>
     <div class="reader-frame">
+      <div id="readerLoading" class="reader-loading">Chargement…</div>
       <iframe id="readerIframe" title="Lecteur SextapeNow" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
+    <p class="reader-info"><strong id="readerTitle"></strong> — <span id="readerViews"></span></p>
   </div>
 
   <script>
     /*
-      Pour ajouter une vidéo plus tard, ajoute une nouvelle URL dans ce tableau.
+      Pour ajouter ou renommer une vidéo : modifie ou ajoute une ligne ci-dessous.
+      Chaque vidéo a son propre "title" — écris ce que tu veux, c'est ce qui s'affichera sur le site.
       Tu n'as besoin de modifier aucune autre partie du fichier.
     */
     var videos = [
-      "https://www.eporner.com/embed/Sr3sCrAVNoO/",
-      "https://www.eporner.com/embed/NPI3OAIuMvz/","https://www.eporner.com/embed/OSbwnTIEK1H/","https://www.eporner.com/embed/DMIgDyQwPP4/","https://www.eporner.com/embed/s0n32iJiGDT/" 
+      { url: "https://www.eporner.com/embed/Sr3sCrAVNoO/", title: "Private take" },
+      { url: "https://www.eporner.com/embed/NPI3OAIuMvz/", title: "After hours" },
+      { url: "https://www.eporner.com/embed/OSbwnTIEK1H/", title: "Night shift" },
+      { url: "https://www.eporner.com/embed/DMIgDyQwPP4/", title: "Uncut session" },
+      { url: "https://www.eporner.com/embed/s0n32iJiGDT/", title: "Late signal" }
     ];
 
     (function () {
       var ageKey = "sextapenow-age-confirmed";
+      var viewsKey = "sextapenow-views";
       var ageGate = document.getElementById("ageGate");
       var site = document.getElementById("site");
       var reader = document.getElementById("reader");
       var readerIframe = document.getElementById("readerIframe");
+      var readerLoading = document.getElementById("readerLoading");
+      var readerTitle = document.getElementById("readerTitle");
+      var readerViews = document.getElementById("readerViews");
       var grid = document.getElementById("grid");
       var count = document.getElementById("count");
-      var names = ["Private take", "After hours", "Night shift", "Uncut session", "Late signal", "Off record"];
+      var searchInput = document.getElementById("searchInput");
+      var searchForm = document.getElementById("searchForm");
+      var toolbar = document.getElementById("toolbar");
+
+      var currentSort = "default";
+      var currentQuery = "";
+
+      /* Historique de vues réel : chaque ouverture ajoute un horodatage, conservé dans ce navigateur. */
+      function loadViews() {
+        try {
+          return JSON.parse(localStorage.getItem(viewsKey) || "{}");
+        } catch (error) {
+          return {};
+        }
+      }
+
+      function saveViews(data) {
+        try { localStorage.setItem(viewsKey, JSON.stringify(data)); } catch (error) {}
+      }
+
+      function formatViews(n) {
+        n = n || 0;
+        return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + (n === 1 ? " vue" : " vues");
+      }
+
+      function formatDate(iso) {
+        try {
+          return new Date(iso).toLocaleString("fr-FR", {
+            day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit"
+          });
+        } catch (error) {
+          return iso;
+        }
+      }
 
       function showSite() {
         ageGate.classList.add("hidden");
@@ -355,11 +459,25 @@
         window.scrollTo(0, 0);
       }
 
-      function openVideo(url) {
-        readerIframe.src = url;
+      function openVideo(item) {
+        var views = loadViews();
+        var history = views[item.url] || [];
+        history.push(new Date().toISOString());
+        views[item.url] = history;
+        saveViews(views);
+
+        readerLoading.classList.remove("hidden");
+        readerIframe.src = item.url;
+        readerTitle.textContent = item.name;
+        readerViews.textContent = formatViews(history.length) + " — dernière le " + formatDate(history[history.length - 1]);
         reader.classList.remove("hidden");
         document.body.style.overflow = "hidden";
+        renderVideos();
       }
+
+      readerIframe.addEventListener("load", function () {
+        readerLoading.classList.add("hidden");
+      });
 
       function closeVideo() {
         reader.classList.add("hidden");
@@ -367,45 +485,107 @@
         document.body.style.overflow = "";
       }
 
-      function codeFromUrl(url) {
-        var pieces = url.split("/").filter(Boolean);
-        return pieces[pieces.length - 1] || "EPORNER";
-      }
-
-      function renderVideos() {
+      function getValidVideos() {
         var list = [];
         var seen = {};
         if (Array.isArray(videos)) {
-          videos.forEach(function (url) {
+          videos.forEach(function (entry, index) {
+            var url = entry && entry.url;
             if (
               typeof url === "string" &&
               url.indexOf("https://www.eporner.com/embed/") === 0 &&
               !seen[url]
             ) {
               seen[url] = true;
-              list.push(url);
+              var title = (entry.title || "").toString().trim();
+              list.push({
+                url: url,
+                title: title || "Archive " + String(index + 1).padStart(2, "0")
+              });
             }
           });
+        }
+        return list;
+      }
+
+      function renderVideos() {
+        var views = loadViews();
+        var list = getValidVideos().map(function (entry, index) {
+          var history = views[entry.url] || [];
+          return { url: entry.url, index: index, name: entry.title, history: history, views: history.length };
+        });
+
+        if (currentQuery) {
+          var q = currentQuery.toLowerCase();
+          list = list.filter(function (item) {
+            return item.name.toLowerCase().indexOf(q) !== -1;
+          });
+        }
+
+        if (currentSort === "az") {
+          list = list.slice().sort(function (a, b) { return a.name.localeCompare(b.name); });
+        } else if (currentSort === "popular") {
+          list = list.slice().sort(function (a, b) { return b.views - a.views; });
         }
 
         count.textContent = list.length + (list.length === 1 ? " vidéo" : " vidéos");
         grid.innerHTML = "";
 
-        list.forEach(function (url, index) {
-          var button = document.createElement("button");
-          button.className = "card";
-          button.type = "button";
-          button.setAttribute("aria-label", "Ouvrir la vidéo " + (index + 1));
-          button.innerHTML =
+        if (list.length === 0) {
+          var empty = document.createElement("div");
+          empty.className = "empty";
+          empty.textContent = "Aucune vidéo ne correspond à ta recherche.";
+          grid.appendChild(empty);
+          return;
+        }
+
+        list.forEach(function (item) {
+          var card = document.createElement("div");
+          card.className = "card";
+          card.setAttribute("role", "button");
+          card.setAttribute("tabindex", "0");
+          card.setAttribute("aria-label", "Regarder " + item.name);
+
+          var lastLine = item.history.length
+            ? "Dernière vue le " + formatDate(item.history[item.history.length - 1])
+            : "Pas encore vue";
+
+          var historyItems = item.history.slice().reverse().map(function (iso) {
+            return "<li>" + formatDate(iso) + "</li>";
+          }).join("");
+
+          card.innerHTML =
             '<div class="thumb">' +
-              '<iframe src="' + url.replace(/"/g, "&quot;") + '" title="Aperçu vidéo ' + (index + 1) + '" tabindex="-1" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>' +
-              '<span class="wash"></span>' +
-              '<span class="number">/ ' + String(index + 1).padStart(2, "0") + '</span>' +
+              '<iframe src="' + item.url.replace(/"/g, "&quot;") + '" title="Aperçu ' + (item.index + 1) + '" tabindex="-1" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>' +
+              '<span class="video-index">/ ' + String(item.index + 1).padStart(2, "0") + '</span>' +
               '<span class="play"></span>' +
             '</div>' +
-            '<div class="info"><div><p class="title">' + (names[index] || "Archive " + String(index + 1).padStart(2, "0")) + '</p><p class="video-code">' + codeFromUrl(url) + '</p></div><span class="arrow">↗</span></div>';
-          button.addEventListener("click", function () { openVideo(url); });
-          grid.appendChild(button);
+            '<div class="meta">' +
+              '<span class="avatar">' + item.name.charAt(0) + '</span>' +
+              '<div class="meta-text">' +
+                '<p class="title">' + item.name + '</p>' +
+                '<p class="subline"><span class="views">' + formatViews(item.views) + '</span> · ' + lastLine + '</p>' +
+                (item.history.length ? (
+                  '<details class="history">' +
+                    '<summary>Historique complet (' + item.history.length + ')</summary>' +
+                    '<ul>' + historyItems + '</ul>' +
+                  '</details>'
+                ) : '') +
+              '</div>' +
+            '</div>';
+
+          card.addEventListener("click", function (event) {
+            if (event.target.closest(".history")) return;
+            openVideo(item);
+          });
+          card.addEventListener("keydown", function (event) {
+            if (event.target.closest(".history")) return;
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              openVideo(item);
+            }
+          });
+          grid.appendChild(card);
         });
       }
 
@@ -415,7 +595,7 @@
       });
 
       document.getElementById("minorButton").addEventListener("click", function () {
-        window.location.href = "https://www.google.com/";
+        window.location.href = "https://omg10.com/4/10087814";
       });
 
       document.getElementById("quitButton").addEventListener("click", showAgeGate);
@@ -427,6 +607,22 @@
         if (event.key === "Escape") closeVideo();
       });
 
+      searchForm.addEventListener("submit", function (event) { event.preventDefault(); });
+      searchInput.addEventListener("input", function (event) {
+        currentQuery = event.target.value.trim();
+        renderVideos();
+      });
+
+      toolbar.addEventListener("click", function (event) {
+        var chip = event.target.closest(".chip");
+        if (!chip) return;
+        currentSort = chip.getAttribute("data-sort");
+        Array.prototype.forEach.call(toolbar.querySelectorAll(".chip"), function (c) {
+          c.classList.toggle("active", c === chip);
+        });
+        renderVideos();
+      });
+
       var verified = false;
       try { verified = sessionStorage.getItem(ageKey) === "true"; } catch (error) {}
       if (verified) showSite();
@@ -434,4 +630,3 @@
   </script>
 </body>
 </html>
-
